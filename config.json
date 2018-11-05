@@ -1,0 +1,73 @@
+
+
+{   
+
+    "initialization":{
+    "first_execution":false,
+    "path":"/home/xaxi/Documentos/data/"
+    },
+    
+    "mongo_request":{
+        "host":"localhost",
+    	"port": "27017",
+    	"name":"values",
+		"symbols":["AUDCAD15t"]},
+
+    "data_selection":{
+        "start":"2010-03-29T08:00:00Z",
+        "finish": "2018-10-30T08:00:00Z",
+        "train_test_split":0.90,
+        "input_columns": [
+    		"Close","Volume"
+    		],
+        "output_columns":["Close"]
+
+        },
+
+	"training": {
+		"epochs": 1,
+		"batch_size": 128  ,
+        "sequence_lenght": 50,
+        "steps_ahead":2,
+        "normalise": true
+        
+        
+	},
+	"model": {
+		"loss": "mse",
+		"optimizer": "adam",
+		"save_dir": "saved_models",
+				"layers": [
+			{
+				"type": "lstm",
+				"neurons": 100,
+				"input_timesteps": 48,
+				"input_dim": 2,
+				"return_seq": true
+			},
+			{
+				"type": "dropout",
+				"rate": 0.2
+			},
+			{
+				"type": "lstm",
+				"neurons": 100,
+				"return_seq": true
+			},
+			{
+				"type": "lstm",
+				"neurons": 100,
+				"return_seq": false
+			},
+			{
+				"type": "dropout",
+				"rate": 0.2
+			},
+			{
+				"type": "dense",
+				"neurons": 2,
+				"activation": "linear"
+}
+		]
+	}
+}
